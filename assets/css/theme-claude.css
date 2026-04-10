@@ -109,7 +109,12 @@ body.theme-claude .top-nav {
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  min-height: 60px;
+  height: auto;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
   background-color: var(--claude-bg);
   border-bottom: 1px solid var(--claude-footer-border);
   display: flex;
@@ -122,6 +127,7 @@ body.theme-claude .top-nav {
 body.theme-claude .nav-container {
   max-width: 1120px;
   width: 100%;
+  min-height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -222,8 +228,8 @@ body.theme-claude .sidebar {
   flex-shrink: 0;
   position: fixed; /* 从 sticky 改为 fixed，确保完全固定 */
   left: calc(50% - 560px); /* 560px 是 wrapper 1120px 的一半 */
-  top: 60px; /* 为顶栏留出空间 */
-  height: calc(100vh - 60px);
+  top: calc(60px + env(safe-area-inset-top, 0px));
+  height: calc(100vh - 60px - env(safe-area-inset-top, 0px));
   overflow-y: auto;
   text-align: center;
   box-sizing: border-box;
@@ -623,45 +629,81 @@ body.theme-claude strong {
 }
 
 /* --- Responsive --- */
-  @media (max-width: 1080px) {
-    body.theme-claude .wrapper {
-      width: 100%;
-      flex-direction: column;
-      padding: 0 20px;
-      box-sizing: border-box;
-    }
-
-    body.theme-claude .sidebar {
-      width: 100%;
-      position: static;
-      height: auto;
-      padding: 48px 0 24px;
-      overflow: visible;
-    }
-
-    body.theme-claude .content {
-      padding: 32px 0 48px;
-    }
-
-    body.theme-claude .site-footer {
-      padding: 32px 0;
-    }
-
-    body.theme-claude .site-footer p {
-      border-top: none;
-      padding-top: 0;
-    }
-
-    body.theme-claude .image.avatar img {
-      width: 140px;
-      height: 140px;
-    }
-
-    body.theme-claude .theme-switcher {
-      bottom: 16px;
-      right: 16px;
-    }
+@media (max-width: 1080px) {
+  body.theme-claude .wrapper {
+    width: 100%;
+    flex-direction: column;
+    /* Clear fixed .top-nav (60px); was overlapping profile when sidebar is static */
+    padding: calc(60px + env(safe-area-inset-top, 0px)) 20px 0;
+    box-sizing: border-box;
   }
+
+  /* .top-nav already applies safe-area insets; keep gutters modest on narrow screens */
+  body.theme-claude .nav-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  body.theme-claude .sidebar {
+    width: 100%;
+    max-width: 100%;
+    position: static;
+    left: auto;
+    height: auto;
+    padding: 24px 0 20px;
+    overflow: visible;
+    margin-left: 0;
+  }
+
+  body.theme-claude .content {
+    padding: 24px 0 48px;
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.theme-claude .site-footer {
+    padding: 32px 16px;
+    padding-bottom: max(32px, env(safe-area-inset-bottom, 0px));
+  }
+
+  body.theme-claude .site-footer p {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  body.theme-claude .image.avatar img {
+    width: 140px;
+    height: 140px;
+  }
+
+  body.theme-claude .theme-switcher {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  body.theme-claude .experience-content {
+    min-width: 0;
+  }
+}
+
+/* Publication teasers: fixed 270px width overflows small screens */
+@media (max-width: 768px) {
+  body.theme-claude .publications ol.bibliography li .teaser {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 270 / 123;
+    margin-left: 0;
+    box-sizing: border-box;
+  }
+
+  body.theme-claude .section-body {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
 
 @media (max-width: 480px) {
   body.theme-claude .card {
@@ -670,5 +712,14 @@ body.theme-claude strong {
 
   body.theme-claude .section {
     margin-bottom: 32px;
+  }
+
+  body.theme-claude .experience-item {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  body.theme-claude .institution-logo {
+    margin-right: 12px;
   }
 }

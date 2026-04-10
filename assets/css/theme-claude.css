@@ -31,7 +31,7 @@
     --claude-social-bg: #22211E;
     --claude-social-text: #D1CEC7;
     --claude-footer-border: rgba(226, 138, 103, 0.15);
-    --claude-decoration-opacity: 0.22;
+    --claude-decoration-opacity: 0.12;
     --claude-decoration-image: url("../img/red_panda_bg_dark.png");
   }
 }
@@ -48,7 +48,7 @@
   --claude-social-bg: #22211E;
   --claude-social-text: #D1CEC7;
   --claude-footer-border: rgba(226, 138, 103, 0.15);
-  --claude-decoration-opacity: 0.22;
+  --claude-decoration-opacity: 0.12;
   --claude-decoration-image: url("../img/red_panda_bg_dark.png");
 }
 
